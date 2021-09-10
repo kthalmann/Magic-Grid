@@ -39,7 +39,10 @@ class MagicGrid {
     this.useTransform = config.useTransform;
     this.animate = config.animate || false;
     this.center = config.center;
+    this.onReady = config.onReady || false;
     this.styledItems = new Set();
+
+    this.initStyles();
   }
 
   /**
@@ -98,7 +101,7 @@ class MagicGrid {
   setup () {
     let width = this.container.getBoundingClientRect().width;
     let colWidth = this.colWidth();
-    let numCols = Math.floor(width/colWidth) || 1;
+    let numCols = Math.floor((width + this.gutter)/colWidth) || 1;
     let cols = [];
 
     if (this.maxColumns && numCols > this.maxColumns) {
@@ -222,6 +225,9 @@ class MagicGrid {
       });
 
       this.positionItems();
+
+      // throw ready event
+      this.onReady && this.onReady();
     }
     else this.getReady();
   }
